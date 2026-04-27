@@ -1,0 +1,22 @@
+name: Daily Activity Update
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  update-activity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update activity log
+        run: |
+          date >> activity.log
+          git config --global user.name "Stackaura Bot"
+          git config --global user.email "bot@stackaura.com"
+          git add activity.log
+          git commit -m "chore: daily activity update [skip ci]"
+          git push origin HEAD
